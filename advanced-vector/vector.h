@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 
 #include <algorithm>
 #include <cassert>
@@ -35,7 +35,7 @@ public:
     }
 
     T* operator+(size_t offset) noexcept {
-        // Разрешается получать адрес ячейки памяти, следующей за последним элементом массива
+        // Р Р°Р·СЂРµС€Р°РµС‚СЃСЏ РїРѕР»СѓС‡Р°С‚СЊ Р°РґСЂРµСЃ СЏС‡РµР№РєРё РїР°РјСЏС‚Рё, СЃР»РµРґСѓСЋС‰РµР№ Р·Р° РїРѕСЃР»РµРґРЅРёРј СЌР»РµРјРµРЅС‚РѕРј РјР°СЃСЃРёРІР°
         assert(offset <= capacity_);
         return buffer_ + offset;
     }
@@ -71,12 +71,12 @@ public:
     }
 
 private:
-    // Выделяет сырую память под n элементов и возвращает указатель на неё
+    // Р’С‹РґРµР»СЏРµС‚ СЃС‹СЂСѓСЋ РїР°РјСЏС‚СЊ РїРѕРґ n СЌР»РµРјРµРЅС‚РѕРІ Рё РІРѕР·РІСЂР°С‰Р°РµС‚ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° РЅРµС‘
     static T* Allocate(size_t n) {
         return n != 0 ? static_cast<T*>(operator new(n * sizeof(T))) : nullptr;
     }
 
-    // Освобождает сырую память, выделенную ранее по адресу buf при помощи Allocate
+    // РћСЃРІРѕР±РѕР¶РґР°РµС‚ СЃС‹СЂСѓСЋ РїР°РјСЏС‚СЊ, РІС‹РґРµР»РµРЅРЅСѓСЋ СЂР°РЅРµРµ РїРѕ Р°РґСЂРµСЃСѓ buf РїСЂРё РїРѕРјРѕС‰Рё Allocate
     static void Deallocate(T* buf) noexcept {
         operator delete(buf);
     }
@@ -260,9 +260,6 @@ public:
             }
         }
         return Emplace(pos, value);
-
-
-        //return Emplace(pos, value);
     }
     iterator Insert(const_iterator pos, T&& value) {
         return Emplace(pos, std::forward<T>(value));
@@ -302,26 +299,6 @@ public:
             return &data_[index];
         }
         else {
-            /*
-            size_t index = pos - cbegin();
-            if constexpr (sizeof...(args) > 1) {
-                T temp(std::forward<Args>(args)...);
-                std::move_backward(data_.GetAddress() + index, end(), end());
-                data_[index] = std::move(temp);
-            }
-            else {
-                std::move_backward(data_.GetAddress() + index, end(), end());
-                new (data_.GetAddress() + index) T(std::forward<Args>(args)...);
-            }
-            */
-            /*
-            size_t index = pos - cbegin();
-            T* temp = new T(std::forward<Args>(args)...);
-            std::uninitialized_move_n(data_.GetAddress() + size_ - 1, 1, data_.GetAddress() + size_);
-            std::move_backward(data_.GetAddress() + index, end() - 1, end());
-            new (data_.GetAddress() + index) T(std::move(*temp));
-            delete temp;
-            */
             size_t index = pos - cbegin();
             T* temp = new T(std::forward<Args>(args)...);
             std::move_backward(data_.GetAddress() + size_ - 1, data_.GetAddress() + size_, data_.GetAddress() + size_);
